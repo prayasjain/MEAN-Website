@@ -7,9 +7,10 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatPaginatorModule} from '@angular/material/paginator';
-
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+
 import {HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +18,8 @@ import { AppComponent } from './app.component';
 import {PostCreateComponent} from './posts/post-create/post-create.component';
 import {HeaderComponent} from './header/header.component';
 import { PostListComponent} from './posts/post-list/post-list.component';
+import { LoginComponent} from './auth/login/login.component';
+import { SignUpComponent} from './auth/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -24,10 +27,13 @@ import { PostListComponent} from './posts/post-list/post-list.component';
     PostCreateComponent,
     HeaderComponent,
     PostListComponent,
+    LoginComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
     MatInputModule,
