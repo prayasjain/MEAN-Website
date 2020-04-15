@@ -85,14 +85,26 @@ router.get('/:id', (req, res, next) => {
 });
 
 router.get('',(req, res, next) => {
-//  res.send("hello from exporess");
-  Post.find()
-    .then((posts) => {
-      res.status(200).json({
-        message : 'fetch success',
-        posts : posts
-      });
+  const pageSize = +req.query.pageSize;
+  const currPage = +req.query.currPage;
+  const postQuery = Post.find();
+  let fetchedPosts;
+  if (pageSize && currPage) {
+    postQuery
+      .skip(pageSize*(currPage - 1))
+      .limit(pageSize);
+  }
+  postQuery.then((posts) => {
+    fetchedPosts = posts;
+    return Post.count();
+
+  }).then(count => {
+    res.status(200).json({
+      message : 'fetch success',
+      posts : fetchedPosts,
+      maxPosts : count
     });
+  });
 
 });
 
