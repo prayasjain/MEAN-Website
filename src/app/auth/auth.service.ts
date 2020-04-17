@@ -3,6 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import {AuthData} from './auth.model';
 import { Subject } from 'rxjs';
 import { Router } from '@angular/router';
+import {environment} from '../../environments/environment';
+
+const BACKEND_URL = environment.apiUrl + '/user/';
 
 @Injectable({providedIn: 'root'})
 export class AuthService {
@@ -33,7 +36,7 @@ export class AuthService {
       email : email,
       password : password
     };
-    this.http.post('http://localhost:3000/api/user/signup', authData)
+    this.http.post(BACKEND_URL + '/signup', authData)
     .subscribe((response) => {
       console.log(response);
       this.router.navigate(['/']);
@@ -49,7 +52,7 @@ export class AuthService {
       password : password
     };
     this.http.post<{message : string, token : string, expiresIn : number, userId: string}>(
-      'http://localhost:3000/api/user/login', authData)
+     BACKEND_URL + '/login', authData)
     .subscribe((response) => {
       this.token = response.token;
       if (this.token) {
@@ -57,10 +60,11 @@ export class AuthService {
         this.setAuthTimer(expiresInDuration);
         this.isAuthenticated = true;
         this.authStatusListener.next(true);
+        this.userId = response.userId;
         this.saveAuthData(this.token,
           new Date(new Date().getTime() + expiresInDuration*1000), this.userId);
         this.router.navigate(['/']);
-        this.userId = response.userId;
+
       }
     }, error => {
       this.authStatusListener.next(false);
