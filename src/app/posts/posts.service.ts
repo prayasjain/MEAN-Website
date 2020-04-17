@@ -24,18 +24,21 @@ export class PostsService {
           id: post._id,
           title: post.title,
           content: post.content,
-          imagePath: post.imagePath
+          imagePath: post.imagePath,
+          creator: post.creator
         };
       }), maxPosts : postData.maxPosts};
     }))
     .subscribe( (postData) => {
+      console.log(postData.posts);
       this.posts = postData.posts;
       this.postsUpdated.next({posts : [...this.posts], maxPosts : postData.maxPosts});
     });
   }
 
   getPost(postId : string) {
-    return this.http.get<{_id: string, title: string, content: string, imagePath: string}>
+    return this.http.get<
+    {_id: string, title: string, content: string, imagePath: string, creator : string}>
       ('http://localhost:3000/api/posts/' + postId);
   }
 
@@ -48,7 +51,7 @@ export class PostsService {
       postData.append('content', content);
       postData.append('image', image, title);
     } else {
-      postData = {id : id, title : title, content : content, imagePath : image};
+      postData = {id : id, title : title, content : content, imagePath : image, creator : null};
     }
     this.http.put<{message: string, post : Post}>(
       'http://localhost:3000/api/posts/' + id, postData)

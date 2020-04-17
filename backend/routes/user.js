@@ -11,6 +11,7 @@ router.post("/signup", (req,res,next) => {
       email : req.body.email,
       password : hash
     });
+
   user.save().then(result => {
     res.status(201).json({
       message : "UserCreated",
@@ -52,7 +53,8 @@ router.post("/login", (req, res, next) => {
     res.status(200).json({
       message: "auth success",
       token : token,
-      expiresIn : 3600
+      expiresIn : 3600,
+      userId : fetchedUser._id
     });
 
   })
