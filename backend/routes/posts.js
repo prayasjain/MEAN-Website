@@ -46,6 +46,10 @@ router.post("",
         id : createdPost._id,
       }
     });
+  }).catch(err => {
+    res.status(500).json({
+      message : "post creating failed"
+    });
   });
 
 });
@@ -66,7 +70,6 @@ router.put('/:id' ,
     imagePath: imagePath,
     creator : req.userData.id
   });
-  console.log(post);
   Post.updateOne({_id: req.params.id, creator: req.userData.id}, post)
     .then((result) => {
       if (result.nModified > 0) {
@@ -86,7 +89,10 @@ router.put('/:id' ,
           }
         });
       }
-
+    }).catch(err => {
+      res.status(500).json({
+        message: "couldnt update post"
+      });
     });
 
 });
@@ -99,7 +105,10 @@ router.get('/:id', (req, res, next) => {
       } else {
         res.status(404).json({message : 'object not found'});
       }
-
+    }).catch(err => {
+      res.status(500).json({
+        message: "post fetch failed"
+      });
     });
 });
 
@@ -123,6 +132,10 @@ router.get('',(req, res, next) => {
       posts : fetchedPosts,
       maxPosts : count
     });
+  }).catch(err => {
+    res.status(500).json({
+      message: "post fetch failed"
+    });
   });
 
 });
@@ -135,6 +148,10 @@ router.delete('/:id', checkAuth, (req, res, next) => {
       } else {
         res.status(401).json({message : 'unauthorized'});
       }
+    }).catch(err => {
+      res.status(500).json({
+        message: "post delete failed"
+      });
     });
 });
 
